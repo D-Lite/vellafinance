@@ -1,0 +1,7 @@
+{
+  "name": "vellafinance",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
