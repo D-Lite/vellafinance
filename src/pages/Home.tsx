@@ -1,10 +1,33 @@
+import React from 'react';
 import { IonContent, IonHeader, IonPage, IonTitle, IonSearchbar, IonToolbar } from '@ionic/react';
 import ExploreContainer from '../components/ExploreContainer';
 import './Home.css';
 import Header from '../components/Header';
 import HomePage from '../components/HomePageMain';
 
+
+import { useDispatch, useSelector } from './../store';
+import { getProducts, getCategories } from '../store/slices/product';
+
 const Home: React.FC = () => {
+
+
+  const dispatch = useDispatch();
+
+  const [pageProducts, setPageProducts] = React.useState([]);
+  const [rows, setRows] = React.useState([]);
+
+  const { products } = useSelector((state: any) => state.product);
+
+  React.useEffect(() => {
+    dispatch(getProducts());
+  }, [dispatch]);
+
+  React.useEffect(() => {
+    setRows(products);
+  })
+
+
   return (
     <IonPage>
       {/* <IonHeader>
@@ -31,7 +54,7 @@ const Home: React.FC = () => {
       <IonContent fullscreen className="relative">
         <div className=''>
           <Header />
-          <HomePage />
+          <HomePage products={rows} />
         </div>
       </IonContent>
     </IonPage>

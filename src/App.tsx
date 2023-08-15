@@ -4,6 +4,8 @@ import { IonReactRouter } from '@ionic/react-router';
 import Home from './pages/Home';
 import Cart from './pages/Cart';
 import './theme/tailwind.css'
+import { Provider } from 'react-redux'
+import { store } from './store'
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -28,19 +30,21 @@ setupIonicReact();
 
 const App: React.FC = () => (
   <IonApp>
-    <IonReactRouter>
-      <IonRouterOutlet>
-        <Route exact path="/home">
-          <Home />
-        </Route>
-        <Route exact path="/">
-          <Redirect to="/home" />
-        </Route>
-        <Route exact path="/cart">
-          <Cart />
-        </Route>
-      </IonRouterOutlet>
-    </IonReactRouter>
+    <Provider store={store}>
+      <IonReactRouter>
+        <IonRouterOutlet>
+          <Route exact path="/home">
+            <Home />
+          </Route>
+          <Route exact path="/">
+            <Redirect to="/home" />
+          </Route>
+          <Route exact path="/cart">
+            <Cart />
+          </Route>
+        </IonRouterOutlet>
+      </IonReactRouter>
+    </Provider>
   </IonApp>
 );
 
