@@ -1,109 +1,61 @@
-import { createSlice } from "@reduxjs/toolkit";
+// third-party
+import { createSlice, current } from '@reduxjs/toolkit';
 
-import { dispatch } from '../index';
+// project imports
 import axios from 'axios';
+import { dispatch } from '../index';
+import Cart from '../../pages/Cart';
 
-const getDate = () => {
-    const date = new Date();
-    return date.toLocaleString().split(",")[0];
+
+interface Product {
+    id: number;
+    title: string;
+    price: number;
+    image: string;
+    quantity?: number;
+    description: string;
+    category: string;
 }
+// ----------------------------------------------------------------------
 
-const initialState = {
-    error: null,
-    checkout: {
-        step: 0,
-        products: [],
-        subtotal: 0,
-        total: 0,
-        billing: null,
-        payment: {
-            type: 'free',
-            method: 'cod',
-            card: ''
-        }
-    }
-}
-
-const baseURL = 'https://fakestoreapi.com'
 
 const slice = createSlice({
     name: 'cart',
-    initialState,
+    initialState: {
+        cart: [],
+    },
     reducers: {
-        hasError(state, action) {
-            state.error = action.payload;
+        addToCart: (state, action) => {
+            // console.log(state.cart)
+            // state.cart = [];
+            console.log('before', current(state.cart))
+            // const itemInCart = state.cart.find((item: Product) => item.id === action.payload.id);
+            const itemInCart = state.cart.find(item => item.id === action.payload.id);
+            console.log('after', current(state.cart))
+
+            if (itemInCart) {
+                itemInCart.quantity++;
+            } else {
+                state.cart.push({ ...action.payload, quantity: 1 });
+            }
+
         },
 
-        addProductSuccess(state, action) {
-            state.checkout.products = action.payload.products;
-            state.checkout.subtotal += action.payload.subtotal;
-            state.checkout.total += action.payload.total;
+        changeQuantity: (state, action) => {
+            const item = state.cart.find((item) => item.id === action.payload.id);
+            item.quantity = action.payload.quantity;
         },
-
-        removeProductSuccess(state, action) {
-            state.checkout.products = action.payload.products;
-            state.checkout.subtotal += -action.payload.subtotal;
-            state.checkout.total += -action.payload.total
+        removeItem: (state, action) => {
+            const removeItem = state.cart.filter((item) => item.id !== action.payload);
+            state.cart = removeItem;
         },
-        // SET BILLING ADDRESS
-        setBillingAddressSuccess(state, action) {
-            state.checkout.billing = action.payload.billing;
-        },
-
-        // SET PAYMENT METHOD
-        setPaymentMethodSuccess(state, action) {
-            state.checkout.payment = {
-                ...state.checkout.payment,
-                method: action.payload.method
-            };
-        },
-
-        // SET PAYMENT CARD
-        setPaymentCardSuccess(state, action) {
-            state.checkout.payment = {
-                ...state.checkout.payment,
-                card: action.payload.card
-            };
-        },
-
-        // RESET CART
-        resetCardSuccess(state) {
-            state.checkout = initialState.checkout;
-        }
     }
-})
+});
 
 
-export default slice.reducer;
-
-// ----------------------------------------------------------------------
-export function addProduct(productId: string, quantity: string) {
-    return async () => {
-        try {
-            const response = await axios.post(`${baseURL}/cart`,
-                {
-                    body: JSON.stringify(
-                        {
-                            userId: 5,
-                            date: getDate(),
-                            products: [{ productId, quantity }]
-                        }
-                    )
-                });
-            dispatch(slice.actions.addProductSuccess(response.data));
-        } catch (error) {
-            dispatch(slice.actions.hasError(error));
-        }
-    };
-}
-
-export function removeProduct(id: string, products: object) {
-    return async () => {
-        try {
-            const response = await axios.post('/api/cart/remove', { id, products });
-            dispatch(slice.actions.removeProductSuccess(response.data));
-        } catch (error) {
-            dispatch(slice.actions.hasError(error));
-        }
-    };
-}
+export const cartReducer = slice.reducer;
+export const {
+    addToCart,
+    changeQuantity,
+    removeItem,
+} = slice.actions;

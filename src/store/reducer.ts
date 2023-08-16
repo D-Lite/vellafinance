@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 import persistReducer from 'redux-persist/es/persistReducer';
 import storage from 'redux-persist/lib/storage';
 
-import cartReducer from './slices/cart'
+import { cartReducer } from './slices/cart'
 import productReducer from './slices/product';
 
 const reducer = combineReducers({
