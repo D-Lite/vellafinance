@@ -8,6 +8,15 @@ import {
 import { chevronForwardOutline } from 'ionicons/icons';
 import { addToCart } from '../store/slices/cart';
 import { useDispatch, useSelector } from './../store';
+import { Swiper, SwiperSlide } from 'swiper/react';
+
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/pagination';
+import '../theme/swiper.css'
+
+import { Pagination } from 'swiper/modules';
+
 
 interface Product {
     id: number;
@@ -67,18 +76,23 @@ const HomePage:
             // <IonContent>
             <div className="my-8" >
                 <div className="container mx-auto px-6">
-                    <div className="h-64 rounded-md overflow-hidden bg-cover bg-center" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1577655197620-704858b270ac?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1280&q=144')" }}>
-                        <div className="bg-gray-900 bg-opacity-50 flex items-center h-full">
-                            <div className="px-10 max-w-xl">
-                                <h2 className="text-2xl text-white font-semibold">Sport Shoes</h2>
-                                <p className="mt-2 text-gray-400">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempore facere provident molestias ipsam sint voluptatum pariatur.</p>
-                                <IonButton className="flex items-center mt-4 px-3 py-2 bg-blue-600 text-white text-sm uppercase font-medium rounded hover:bg-blue-500 focus:outline-none focus:bg-blue-500">
-                                    <span>Shop Now</span>
-                                    <IonIcon icon={chevronForwardOutline} className="h-5 w-5 mx-2" />
-                                </IonButton>
-                            </div>
-                        </div>
-                    </div>
+
+
+                    <Swiper
+                        spaceBetween={30}
+                        pagination={{
+                            clickable: true,
+                        }}
+                        modules={[Pagination]}
+                        className="mySwiper"
+                    >
+                        <SwiperSlide><img src="https://images.unsplash.com/photo-1577655197620-704858b270ac?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1280&q=144" /></SwiperSlide>
+                        <SwiperSlide><img src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" /></SwiperSlide>
+                        <SwiperSlide><img src="https://images.unsplash.com/photo-1601924994987-69e26d50dc26?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" /></SwiperSlide>
+                        <SwiperSlide><img src="https://images.unsplash.com/photo-1477901492169-d59e6428fc90?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" /></SwiperSlide>
+                        <SwiperSlide><img src="https://images.unsplash.com/photo-1520006403909-838d6b92c22e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" /></SwiperSlide>
+
+                    </Swiper>
 
                     <div className="container mx-auto px-6 mt-6">
                         <input
@@ -120,15 +134,7 @@ const HomePage:
 
 
                     </div>
-                    <div className="h-64 rounded-md overflow-hidden bg-cover bg-center" style={{ backgroundImage: "./../src/assets/images/promote1.png" }}>
-                        <div className="bg-gray-900 bg-opacity-50 flex items-center h-full">
-                            <div className="px-5 max-w-xl">
-                                <h2 className="text-2xl text-white font-semibold">Recomended Product</h2>
-                                <p className="mt-2 text-gray-400">We recommend the best for you.</p>
-                            </div>
-                        </div>
-                    </div>
-                    {/* ... Repeat the rest of the content ... */}
+
                 </div>
             </div>
         );

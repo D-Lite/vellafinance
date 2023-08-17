@@ -3,7 +3,8 @@ import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import Home from './pages/Home';
 import Cart from './pages/Cart';
-import './theme/tailwind.css'
+import CheckoutSuccess from './pages/Checkout';
+
 import { Provider } from 'react-redux'
 import { store } from './store'
 
@@ -24,8 +25,9 @@ import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
 
 /* Theme variables */
+import './theme/tailwind.css'
 import './theme/variables.css';
-import CheckoutSuccess from './pages/Checkout';
+
 
 setupIonicReact();
 
