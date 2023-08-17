@@ -19,9 +19,7 @@ const Header = () => {
 
 
     const cart = useSelector((state: RootState) => state.cart.cart)
-    console.log(cart)
     const getTotalQuantity = () => {
-        let total = 0
         return cart.length;
     }
 
@@ -54,9 +52,6 @@ const Header = () => {
                             </a>
                         </div>
                     </IonButtons>
-                </div>
-                <div className="container mx-auto px-6 mt-4">
-                    <IonSearchbar className="border rounded-md pl-10 pr-4 py-2" placeholder="Search" />
                 </div>
             </IonToolbar>
         </IonHeader>
