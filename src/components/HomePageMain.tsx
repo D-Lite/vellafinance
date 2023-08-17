@@ -13,7 +13,7 @@ import { addToCart } from '../store/slices/cart';
 import { useDispatch, useSelector } from './../store';
 
 interface Product {
-    id: string;
+    id: number;
     title: string;
     price: number;
     description: string;
@@ -23,6 +23,7 @@ interface Product {
         rate: number;
         count: number;
     };
+    quantity?: number;
 }
 
 interface ProductListProps {
@@ -32,7 +33,6 @@ interface ProductListProps {
 const HomePage:
     React.FC<ProductListProps> = ({ products }) => {
 
-        console.log(products);
         const productsByCategory: Record<string, Product[]> = {};
         products.forEach(product => {
             if (!productsByCategory[product.category]) {
@@ -44,7 +44,7 @@ const HomePage:
         const dispatch = useDispatch();
 
 
-        const handleAddToCart = async (product: Product) => {
+        const handleAddToCart = async (product: Product | any) => {
             try {
                 const response = await dispatch(addToCart(product));
             } catch (error) {

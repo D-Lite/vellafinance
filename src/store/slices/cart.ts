@@ -1,61 +1,95 @@
-// third-party
-import { createSlice, current } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction, current } from '@reduxjs/toolkit';
 
-// project imports
-import axios from 'axios';
-import { dispatch } from '../index';
-import Cart from '../../pages/Cart';
-
+interface Rating {
+    rate: number;
+    count: number;
+}
 
 interface Product {
     id: number;
     title: string;
     price: number;
     image: string;
-    quantity?: number;
+    quantity: number; // Make quantity non-optional
     description: string;
     category: string;
+    rating: Rating;
 }
-// ----------------------------------------------------------------------
 
+
+interface user {
+    name: string;
+    email: string;
+    address: string;
+}
+
+interface CheckoutData {
+    cart: Array<Product>;
+    user: user;
+    total: number;
+}
+
+const initialState: CheckoutData = {
+    cart: [],
+    user: {
+        name: '',
+        email: '',
+        address: '',
+    },
+    total: 0,
+};
 
 const slice = createSlice({
     name: 'cart',
-    initialState: {
-        cart: [],
-    },
+    initialState,
     reducers: {
-        addToCart: (state, action) => {
-            // console.log(state.cart)
-            // state.cart = [];
-            console.log('before', current(state.cart))
-            // const itemInCart = state.cart.find((item: Product) => item.id === action.payload.id);
-            const itemInCart = state.cart.find(item => item.id === action.payload.id);
-            console.log('after', current(state.cart))
-
+        addToCart: (state, action: PayloadAction<Product>) => {
+            const itemInCart = state.cart.find((item: Product) => item.id === action.payload.id);
             if (itemInCart) {
                 itemInCart.quantity++;
             } else {
                 state.cart.push({ ...action.payload, quantity: 1 });
             }
-
+            state.total = state.cart.reduce((total: number, item: Product) => total + item.price * item.quantity, 0);
         },
 
-        changeQuantity: (state, action) => {
-            const item = state.cart.find((item) => item.id === action.payload.id);
-            item.quantity = action.payload.quantity;
+        changeQuantity: (state, action: PayloadAction<{ id: number; quantity: number }>) => {
+            const item = state.cart.find((item: Product) => item.id === action.payload.id);
+            if (item) {
+                item.quantity = action.payload.quantity;
+            }
+            state.total = state.cart.reduce((total: number, item: Product) => total + item.price * item.quantity, 0);
         },
-        removeItem: (state, action) => {
-            const removeItem = state.cart.filter((item) => item.id !== action.payload);
-            state.cart = removeItem;
+
+        checkOutCart: (state, action: PayloadAction<user>) => {
+            state.user = action.payload;
         },
-    }
+
+        clearCart: (state) => {
+            state.cart = []
+            state.user = {
+                name: '',
+                email: '',
+                address: '',
+            }
+            state.total = 0
+        },
+
+        removeItem: (state, action: PayloadAction<number>) => {
+            const updatedCart = state.cart.filter((item) => item.id !== action.payload);
+            state.cart = updatedCart;
+            state.total = state.cart.reduce((total: number, item: Product) => total + item.price * item.quantity, 0);
+        },
+    },
 });
-
 
 export const cartReducer = slice.reducer;
 export const {
     addToCart,
     changeQuantity,
     removeItem,
+    clearCart,
+    checkOutCart,
 } = slice.actions;
+
+export default cartReducer;

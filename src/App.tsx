@@ -25,6 +25,7 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import CheckoutSuccess from './pages/Checkout';
 
 setupIonicReact();
 
@@ -41,6 +42,9 @@ const App: React.FC = () => (
           </Route>
           <Route exact path="/cart">
             <Cart />
+          </Route>
+          <Route exact path="/success">
+            <CheckoutSuccess />
           </Route>
         </IonRouterOutlet>
       </IonReactRouter>

@@ -50,7 +50,7 @@ export default slice.reducer;
 
 // ----------------------------------------------------------------------
 
-export function getProducts(limit: number = 15) {
+export function getProducts() {
     return async () => {
         try {
             const response = await axios.get(`${baseURL}/products`);
