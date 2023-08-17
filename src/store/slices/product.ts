@@ -1,5 +1,5 @@
 // third-party
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 // project imports
 import axios from 'axios';
@@ -55,11 +55,23 @@ export function getProducts() {
         try {
             const response = await axios.get(`${baseURL}/products`);
             dispatch(slice.actions.getProductsSuccess(response.data));
+
+            return response;
         } catch (error) {
             dispatch(slice.actions.hasError(error));
         }
     };
 }
+
+// export const getProducts = createAsyncThunk('product/fetchProducts', async () => {
+//     try {
+//         const response = await axios.get(`${baseURL}/products`);
+//         dispatch(slice.actions.getProductsSuccess(response?.data));
+//         return response.data;
+//     } catch (error) {
+//         throw error;
+//     }
+// });
 
 export function getCategories() {
     return async () => {
