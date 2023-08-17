@@ -6,7 +6,7 @@ import axios from 'axios';
 import { dispatch } from '../index';
 
 
-const baseURL = 'https://fakestoreapi.com'
+const baseURL = import.meta.env.VITE_BASE_API;
 
 // ----------------------------------------------------------------------
 
